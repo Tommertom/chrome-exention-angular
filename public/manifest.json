@@ -23,6 +23,10 @@
     {
       "resources": ["index.html", "receiver.js"],
       "matches": ["<all_urls>"]
+    },
+    {
+      "resources": ["message-box.html"],
+      "matches": ["<all_urls>"]
     }
   ]
 }

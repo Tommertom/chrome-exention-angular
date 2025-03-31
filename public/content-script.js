@@ -38,6 +38,35 @@ if (window.contentScriptInjected) {
     console.error("[CONTENT SCRIPT] Failed to send load notification:", error);
   }
 
+  // Function to display a small message box in the top-left corner
+  function showMessageBox() {
+    // Load the message box HTML from a static file
+    fetch(chrome.runtime.getURL("message-box.html"))
+      .then((response) => response.text())
+      .then((html) => {
+        console.log(
+          "[CONTENT SCRIPT] Message box HTML loaded successfully",
+          html
+        );
+        // Create a container element
+        const container = document.createElement("div");
+        container.innerHTML = html;
+
+        // Get the actual message box element from the loaded HTML
+        const box = container.firstChild;
+
+        // Add the box to the page
+        document.body.appendChild(box);
+        console.log("[CONTENT SCRIPT] Message box loaded and displayed");
+      })
+      .catch((error) => {
+        console.error(
+          "[CONTENT SCRIPT] Failed to load message box HTML:",
+          error
+        );
+      });
+  }
+
   // Listen for messages from the service worker
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("[CONTENT SCRIPT] Content script received message:", message);
@@ -46,6 +75,9 @@ if (window.contentScriptInjected) {
 
     return true;
   });
+
+  // Display the message box
+  showMessageBox();
 
   console.log(
     "[CONTENT SCRIPT] Content script fully loaded on:",
